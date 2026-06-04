@@ -6,3 +6,34 @@ export interface Course {
   capacity: number;
   startDate?: Temporal.PlainDate;
 }
+// --- Exercise 5 Part B ---
+
+export type CourseStatus =
+  | { status: "DRAFT"; createdBy: string; createdAt: Temporal.Instant }
+  | { status: "PUBLISHED"; publishedAt: Temporal.Instant; syllabus: string }
+  | { status: "ACTIVE"; enrolledCount: number; startDate: Temporal.PlainDate }
+  | { status: "ARCHIVED"; archivedAt: Temporal.Instant; finalEnrollmentCount: number }
+  | { status: "CANCELLED"; reason: string; cancelledAt: Temporal.Instant };
+
+export function describeCourse(status: CourseStatus): string {
+  switch (status.status) {
+    case "DRAFT":
+      return `Draft created by ${status.createdBy}`;
+    
+    case "PUBLISHED":
+      return `Published with syllabus: ${status.syllabus}`;
+    
+    case "ACTIVE":
+      return `Active with ${status.enrolledCount} students since ${status.startDate.toString()}`;
+    
+    case "ARCHIVED":
+      return `Archived with a final count of ${status.finalEnrollmentCount} students`;
+    
+    case "CANCELLED":
+      return `Cancelled due to: ${status.reason}`;
+    
+    default:
+      const _exhaustiveCheck: never = status;
+      return _exhaustiveCheck;
+  }
+}
